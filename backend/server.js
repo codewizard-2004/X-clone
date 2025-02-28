@@ -23,8 +23,8 @@ cloud.config({
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.json({ limit: '10mb' }));  // Increase limit to 10MB (adjust as needed)
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
 
 app.use("/api/auth" , authRoutes);
