@@ -15,7 +15,7 @@ const NotificationPage = () => {
 				const res = await fetch("/api/notifications");
 				const data = await res.json();
 				if(!res.ok){
-					throw new Error(data.message || "An Error Occured");
+					throw new Error(data.error || "An Error Occured");
 				}
 				return data;
 			} catch (error) {
@@ -32,7 +32,7 @@ const NotificationPage = () => {
 				});
 				const data = await res.json();
 				if(!res.ok){
-					throw new Error(data.message || "An Error Occured");
+					throw new Error(data.error || "An Error Occured");
 				}
 				return data;
 			} catch (error) {
