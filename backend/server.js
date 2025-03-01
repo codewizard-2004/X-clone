@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-
+import path from "path";
 import authRoutes from "./routes/auth.routes.js"
 import userRoutes from "./routes/user.routes.js"
 import postRoutes from "./routes/post.routes.js"
@@ -21,7 +21,8 @@ cloud.config({
 })
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
+const __dirname = path.resolve();
 
 app.use(express.json({ limit: '10mb' }));  // Increase limit to 10MB (adjust as needed)
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
@@ -31,6 +32,14 @@ app.use("/api/auth" , authRoutes);
 app.use("/api/user" , userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications" , notificationRoutes)
+
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(__dirname , "/frontend/dist")));
+
+    app.get("*" , (req , res)=>{
+        res.sendFile(path.resolve(__dirname , "frontend" , "dist" , "index.html"));
+    })
+}
 
 app.listen(PORT , ()=>{
     console.log(`Server is running at port ${PORT}`);
